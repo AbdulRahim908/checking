@@ -1,21 +1,35 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+const App=()=>{
+  const [data,setData]=useState(undefined);
+  const getApiData=async()=>{
+    // console.warn("hello");
+    const url="https://jsonplaceholder.typicode.com/posts/1";
+    let result =await fetch(url);
+    result=await result.json();
+    // console.warn(result);
+    setData(result)
+  }
+  useEffect(()=>{
+    getApiData();
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  },[])
+
+
+
+
+  return(<View>
+    <Text style={{fontSize:30}}>API call</Text>
+    {
+      data? <View>
+        <Text style={{fontSize:30}}>{data.id}</Text>
+        <Text style={{fontSize:30}}>{data.userId}</Text>
+        <Text style={{fontSize:30}}>{data.title}</Text>
+        <Text style={{fontSize:30}}>{data.body}</Text>
+      </View>:null
+    }
+  </View>)
+
+};
+export default App;
